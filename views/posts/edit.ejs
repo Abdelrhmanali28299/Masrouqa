@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Masrouqa</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <% if (user) { %>
+        <% include ../partials/add-btn.ejs %>
+    <% } %>
+    <% include functions.ejs %>
+    <main>
+        <div class="container">
+            <h1>Edit Post</h1>
+            <div class="row">
+                <form action="/post/edit/<%=post._id%>?_method=PUT" method="post" class="col s12">
+                    <input type="hidden" name="_method" value="PUT">
+                    <div class="row">
+                        <div class="input-field">
+                        <input type="text" name="title" value="<%=post.title%>">
+                        <label for="title">Title</label>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="input-field">
+                        <h5>Description:</h5>
+                        <textarea name="body"><%= post.description %></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field">
+                            <input type="text" name="q1" value="<%= post.questions[0] %>">
+                            <label for="q1">First Question</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field">
+                            <input type="text" name="q2" value="<%= post.questions[1] %>">
+                            <label for="q2">Second Question</label>
+                        </div>
+                    </div>
+                    <input type="submit" value="Save" class="btn">
+                </form>
+            </div>
+        </div>
+    </main>
+    <% include ../partials/footer.ejs %>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('.button-collapse').sideNav();
+            $('select').material_select();
+        });
+        CKEDITOR.replace('body',{plugins: 'wysiwygarea,toolbar,basicstyles,link'});
+    </script>
+</body>
+
+</html>

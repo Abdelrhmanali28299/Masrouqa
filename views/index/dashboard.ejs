@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Masrouqa</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <% if (user) { %>
+        <% include ../partials/add-btn.ejs %>
+    <% } %>
+    <main>
+        <div class="container">
+            <% if (posts.length == 0) { %>
+                <p>you don't have any posts</p>
+            <% } else if (posts.length >= 0) {%>
+                <table class="striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% posts.forEach(function(post){ %>
+                            <tr>
+                                <td><a href="/post/show/<%=post._id%>"><%= post.title %></a></td>
+                                <td><%= post.date.toLocaleTimeString().substr(0, post.date.toLocaleTimeString().lastIndexOf(':')) %> : <%= post.date.toLocaleDateString() %></td>
+                                <td>
+                                    <a class="btn left-align" href="/post/edit/<%=post._id%>"><i class="fa fa-pencil"></i> Edit</a>
+                                    <form action="/post/delete/<%=post._id%>?_method=DELETE" method="post" id="delete-form">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn red"><i class="fa fa-remove"></i> Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </main>
+    <% include ../partials/footer.ejs %>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('.button-collapse').sideNav();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <title>Masrouqa</title>
+</head>
+
+<body>
+    <% include ../partials/nav.ejs %>
+    <% if (user) { %>
+        <% include ../partials/add-btn.ejs %>
+    <% } %>
+    <% include functions.ejs %>
+    <main>
+        <div class="container">
+            <br>
+            <br>
+            <div class="row">
+                <form id="searchForm" class="col s12" action="/post/" method="GET">
+                    <input type="hidden" value="1" name="page">
+                    <div class="row">
+                        <div class="input-field">
+                            <input type="text" placeholder="Search" name="search" id="search">
+                        </div>
+                    </div>
+                    <input type="submit" value="Search" class="btn">
+                </form>
+            </div>
+            <h1>Posts</h1>
+            <div class="row">
+                <% if (posts.length == 0) { %>
+                    <p>No Posts</p>
+                <% } else if (posts.length >= 0) { %>
+                    <% posts.forEach(function(post) { %>
+                        <div class="col s12 m4">
+                            <div class="card">
+                                <div class="card-image">
+                                    <% if (user) { %>
+                                        <%- editIcon(post.user._id, user.id, post._id) %>
+                                    <% } %>
+                                </div>
+                                <div class="card-content center-align">
+                                    <h5><%= post.title %></h5>
+                                    <br>
+                                    <p class="post-text"><%= truncate(stripTags(post.description), 150) %></p>
+                                    <br>
+                                    <div class="chip">
+                                        <img src="<%= post.user.image %>">
+                                        <a href="/post/user/<%=post.user._id%>"><%= post.user.firstName %> <%= post.user.lastName %></a>
+                                    </div>
+                                </div>
+                                <div class="card-action center-align">
+                                    <a class="btn grey" href="/post/show/<%=post._id%>">
+                                        Read More
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+            <% if (posts.length == 15) { %>
+                <a href="/post/?page=<%=lastIndex%>&search=<%=searchWord%>" class="next">Next &raquo;</a>
+            <% } %>
+        </div>
+    </main>
+    <% include ../partials/footer.ejs %>
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('.button-collapse').sideNav();
+        });
+    </script>
+</body>
+
+</html>
